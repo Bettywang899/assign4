@@ -30,19 +30,25 @@ with tabs[2]:
 with tabs[3]:
     st.subheader(f"Birthday Countdown")
     st.write("Find out how many days are left until your next birthday!")
-    from datetime import date, timedelta
 
-    today = date.today()
+    from datetime import datetime, date, timedelta
+    from zoneinfo import ZoneInfo
 
+    # Get today's date in Boston (Eastern Time)
+    today = datetime.now(ZoneInfo("America/New_York")).date()
+
+    # Select an upcoming birthday
     birthday = st.date_input(
         "🎁 Select your upcoming birthday:",
         value=today + timedelta(days=30),
         min_value=today,
-        max_value=date(today.year + 2, 12, 31)
+        max_value=date(today.year + 5, 12, 31)
     )
 
+    # Calculate days remaining
     days_left = (birthday - today).days
 
+    # Display countdown
     if days_left == 0:
         st.success("🎉 Happy Birthday! Have an amazing day!")
         st.balloons()
@@ -55,3 +61,4 @@ with tabs[3]:
             st.write("🎉 Less than a month to go!")
         else:
             st.write("✨ The countdown has begun!")
+
