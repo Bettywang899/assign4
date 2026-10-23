@@ -30,53 +30,24 @@ with tabs[2]:
 with tabs[3]:
     st.subheader(f"Birthday Countdown")
     st.write("Find out how many days are left until your next birthday!")
-
-    from datetime import date
-
-    birthday = st.date_input(
-        "🎁 Select your birthday:",
-        value=date(2004, 1, 1),
-        min_value=date(1900, 1, 1),
-        max_value=date.today()
-    )
+    from datetime import date, timedelta
 
     today = date.today()
 
-    # Calculate the next birthday
-    month = birthday.month
-    day = birthday.day
+    birthday = st.date_input(
+        "🎁 Select your upcoming birthday:",
+        value=today + timedelta(days=30),
+        min_value=today,
+        max_value=date(today.year + 2, 12, 31)
+    )
 
-    # Handle February 29 birthdays
-    if month == 2 and day == 29:
-        try:
-            next_birthday = date(today.year, 2, 29)
-        except ValueError:
-            next_birthday = date(today.year, 2, 28)
-    else:
-        next_birthday = date(today.year, month, day)
+    days_left = (birthday - today).days
 
-    if next_birthday < today:
-        next_year = today.year + 1
-
-        if month == 2 and day == 29:
-            try:
-                next_birthday = date(next_year, 2, 29)
-            except ValueError:
-                next_birthday = date(next_year, 2, 28)
-        else:
-            next_birthday = date(next_year, month, day)
-
-    days_left = (next_birthday - today).days
-
-    # Display results
     if days_left == 0:
         st.success("🎉 Happy Birthday! Have an amazing day!")
         st.balloons()
     else:
         st.metric("🎈 Days Until Your Birthday", days_left)
-        st.progress(
-            max(0.0, min(1.0, (365 - days_left) / 365))
-        )
 
         if days_left <= 7:
             st.write("🎁 Your birthday is almost here!")
@@ -84,4 +55,3 @@ with tabs[3]:
             st.write("🎉 Less than a month to go!")
         else:
             st.write("✨ The countdown has begun!")
-
