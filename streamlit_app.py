@@ -32,7 +32,7 @@ with tabs[3]:
     st.write("Find out how many days are left until your next birthday!")
     from datetime import date, timedelta
 
-    today = datetime.now(ZoneInfo("America/New_York")).date()
+    today = date.today()
 
     birthday = st.date_input(
         "🎁 Select your upcoming birthday:",
